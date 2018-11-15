@@ -1,0 +1,79 @@
+﻿git 学习日记:    https://blog.csdn.net/admin_root1/article/details/78911732
+
+安装：
+    linux：
+        ubuntu ==> sudo apt-get install git
+    windows :
+        https://git-scm.com/downloads  在网站上下载安装包默认安装
+    安装后执行两步命令:
+        git config --global user.name "Your Name"
+        git config --global user.email "email@example.com"
+创建版本库:
+    mkdir dir ==> cd dir
+    git init ==> 初始化版本库
+    git add 添加文件
+    git commit -m '注释'  提交到git仓库
+版本回退：
+    git log ==> 查看版本提交日志   git log --oneline 显示未commit id为7位数为一行的log  git log --pretty=oneline commit id为完整
+        git log --decorate 
+        git log --decorate --oneline --graph --all 
+        git log --graph  可以看到分支合并图
+    git reset --hard commitId 或 git reset --hard HEAD^ (HEAD^ 代表上个版本 HEAD^^ 上上版本 HEAR~100 上100个版本)
+
+撤销修改:
+    场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。
+    场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD <file>，就回到了场景1，第二步按场景1操作。
+    场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。
+
+删除修改:
+    删除文件: rm filename ==> git rm filename ==> git commit -m '备注'
+
+版本对比:
+    git diff  对比工作区和暂存区的差异
+    git diff  CommitId1  CommitId2  对比两个提交版本的差异
+    git diff --cached  对比暂存区和当前仓库快照的差异
+    git diff CommitId  对比当前目录和CommitId版本的差异
+
+修改最近一次提交,删除文件,重命名:
+    gir commit --amend  更改最后一次的提交说明
+    git rm filename  删除文件
+    git rm -f filename 强制删除暂存区和工作区的文件
+    git rm --cached filename  只删除暂存区保留工作区的文件
+    git mv old_filename  new_filenamw  文件重命名
+
+分支:
+    创建分支：git branch 分支名  or git checkout -b 分支名  创建分支并切换到分支
+    切换分支: git checkout 分支名
+    合并分支: git merge 分支名
+    删除分支: git branch -d 分支名
+    查看分支: git branch
+    暂存工作现场: git stash   回到工作现场: git stash pop
+
+    强制删除一个没有被合并的分支:  git branch -D branch_name
+
+
+    --no-ff的合并分支==> 普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并
+
+标签管理:
+    创建标签: git tag  tag_name
+    给历史提交打标签: git tag tag_name commitId
+    查看标签信息: git show  tag_name
+    创建带说明的标签: git tag -a tag_name -m '说明' comminId
+    查看所有标签: git tag
+    删除标签: git tag -d tag_name
+    push标签: git push origin <tag_name>  (origin 为远程仓库名)
+    push全部未push过的本地标签： git push origin --tags
+    从远程删除标签: 1 先本地删除 ==> 2 git push origin :refs/tags/tag_name
+
+clone 仓库:  git clone 仓库地址
+
+添加远程库:
+    1: git remote add origin + 远程仓库地址 ==> 关联远程库  例如: git remote add origin git@github.com:mm143/MM_test.git
+    2: git push -u origin master   第一次推送加-u 把本地分支和远程分支关联 以后用: git push origin master
+
+    3: 拉取远程仓库: git pull orgin master
+克隆库: 
+    git clone + 远程库地址
+
+
+
