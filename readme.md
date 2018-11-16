@@ -5,3 +5,5 @@
 
 wy_songs.py 爬取热门榜单
 wyyyy.py    爬取单收歌曲的热门评论
+
+git.txt  ==> git的笔记from 廖雪峰
