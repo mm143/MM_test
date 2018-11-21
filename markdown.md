@@ -40,10 +40,10 @@
 
     上传本地的图片直接点击导航栏的图片标志，选择图片
 ## 示例
-    ![test_mm](https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=702257389,1274025419&fm=27&gp=0.jpg "区块链")
+![test_mm](http://img3.imgtn.bdimg.com/it/u=618052011,155537526&fm=26&gp=0.jpg "哈哈哈")
 
 # 超链接
-语法: [超链接名](超链接地址 "超链接title")  title可以不加
+语法: \[超链接名\](超链接地址 "超链接title")  title可以不加
 示例:
     [豆瓣](https://www.douban.com/)
     [百度](https://www.baidu.com/)
@@ -87,16 +87,17 @@
 代码之间用一个反引号包起来  `代码内容`
 ## 代码块
 代码块之间用三个反引号包起来,且两边的反引号单独占一行
-```
-    代码...
-    hello world!
+```python
+    print('hello world!')
     print('.....')
 ```
 ## 示例
 `mkdir hello | cd hello `
-```
-    def test(each):
-        print(each)
+```python
+    def test(arg):
+        print(arg)
+    arg=input('')
+    test(arg)
 ```
 
 # 流程图
