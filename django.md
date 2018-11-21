@@ -13,11 +13,11 @@
 `pycharm => New Project => Django`
 ### 项目内文件说明
 - project_name目录下
-   
-1. __init__.py  ==> 空文件
-2. settings.py  ==> 主配置文件
-3. urls.py      ==> 主路由文件
-4. wsgi.py      ==> 网关接口
+
+   1. __init__.py  ==> 空文件
+   2. settings.py  ==> 主配置文件
+   3. urls.py      ==> 主路由文件
+   4. wsgi.py      ==> 网关接口
 * templates     ==> HTML文件安置目录
 + manage.py     ==> 项目管理脚本
 
@@ -50,3 +50,85 @@ def index(request): #第一个参数必须是requests,requests参数封装了用
    2. 输入host 和 port
    3. 点击绿色Run 按钮
 - 然后就可以在本地浏览器中输入127.0.0.1:8000/index 中访问了
+## 返回HTML文件
+- 在templates目录下创建index.html文件
+- 更改views.py
+```python
+from django.shortcuts import render #一般会自动导入
+def index(request):
+    return render(request, 'index.heml') #render方法使用数据字典和请求元数据,渲染一个指定的html模板,第一个参数必须是request,第二个是模板
+```
+- 修改settings文件中的DIRS，让django知道我们的html文件在哪里
+```python
+#在settings.py中找到以下列表并添加
+TEMPLATES = [
+    'DIRS':[os.path.join(BASE_DIR), 'templates'] #templates为本地html所在文件夹
+]
+```
+## 使用静态文件
+- 在django中 一般静态文件放在static目录下，如无此文件夹,在project_name目录下 新建static目录
+- 将插件放入static目录,然后修改settings.py
+```python
+STATIC_URL = '/static/'  #这个'static'指你在浏览器中直接访问静态文件需要添加的前缀
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  #这里的static是指项目目录中的static目录名
+]
+```
+## 接收用户发送的数据
+`username = request.POST.get('username')` # 接收用户输入的username内容,其他类似
+## 返回动态页面
+- 在views中编辑要返回的动态数据,已字典形式返回,例如:
+```python
+user_list = []
+def hello(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        print(username, password)
+        temp = {'username':username,'pwd':password} # 把用户输入的数据构建字典
+        user_list.append(temp)
+    return render(request,'index.html',{'data':user_list} # return data
+```
+- 编辑index.py 展示views返回的data
+
+## 使用数据库
+- 先要在settings.py 中注册app：
+```python
+#在settings.py 中找到INSTALLED_APPS列表 添加
+INSTALLED_APPS = [
+    'APP_NAME'
+]
+DATABASES = {  #这个字典内是数据库的一些信息,不用更改
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',  #这个是指定使用的数据库类型
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'), #默认轻量级sqlite3
+    }
+}
+```
+- 编写models.py 
+```python
+from django.db import models
+class UserInfo(models.Model):
+    user = models.CharField(max_length=32) #创建字段，设置最大长度32,类型为char
+    pwd = models.CharField(max_length=32)
+```
+- pycharm 创建数据库的表
+   
+   - `python manage.py makemigrations` 
+   - `python manage.py migrate` #这步操作后会创建成果db.sqlite3
+
+- 修改views.py
+```python
+def hello(request):  #用户名和密码例子
+     if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        models.UserInfo.objects.create(username=username,pwd=password)
+    user_list = models.UserInfo.objects.all()
+    return render(request,'index.html',{'data':user_list})
+```
+# ** over **
+
+
+
