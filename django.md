@@ -128,6 +128,34 @@ def hello(request):  #用户名和密码例子
     user_list = models.UserInfo.objects.all()
     return render(request,'index.html',{'data':user_list})
 ```
+### 数据库常用操作命令
+- 获取所有数据行,相当于SELECT * FROM 
+`models.UserInfo.object.all()`
+- 设置过滤条件
+`models.UserInfo.object.filter(id=1)`  #括号中为过滤条件
+- 获取单个对象
+`models.UserInfo.object.get(id=1)`
+- 限制返回数据  相当于 LIMIT 0, 2
+`models.UserInfo.object.order_by('name')[0:2]`  #name为排序条件,[0:2]设置过滤条数
+- 数据排序
+`models.UserInfo.object.odery_by('id')`
+- 连锁使用
+`models.UserInfo.object.filter(name='').order_by('id')`
+- update数据
+```sqlite3
+test1 = models.UserInfo.object.get(id=1)
+test1.name = 'test'
+test1.save       #保存更改
+``` 
+`models.UserInfo.object.filter(id=1).update(name='test')` #一步到位
+`models.UserInfo.object.all().update(name='test')`        #修改所有的列
+- 删除数据
+```sqlite3
+test1 = .object.get(id=1)
+test1.delete()    #删除
+```
+`models.UserInfo.object.filter(id=1).delete()`             #一步到位
+`models.UserInfo.object.all().delete()`                    #删除所有数据
 # ** over **
 
 
