@@ -154,3 +154,15 @@ def time(request):
 indwx.html 代码如下:
     { time|date:'Y-m-d H:i:s'} => 2018-12-07 15:04:12
 ```
+
+## 模板继承
+1. 语法
+`{% extends '模板的path' %}`
+2. block 语法
+```html
+{% extends 'index.html'}
+{% block block_mm %}
+    内容
+    {{ block.super }}   # 用block.super显示父模板中的内容
+{% endblock %}
+```
