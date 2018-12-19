@@ -158,6 +158,7 @@ indwx.html 代码如下:
 ## 模板继承
 1. 语法
 `{% extends '模板的path' %}`
+extends标签必须放在模板开始的位置
 2. block 语法
 ```html
 {% extends 'index.html'}
@@ -166,3 +167,19 @@ indwx.html 代码如下:
     {{ block.super }}   # 用block.super显示父模板中的内容
 {% endblock %}
 ```
+## 静态文件
+1. 确保django.contrib.staticfiles 已经添加到settings.py 的 INSTALL_APPS 中
+2. 添加static路径
+- settings.py 中的 STATIC_URL 设置为 STATIC_URL = '/static/' 此类设置可在各app中的static目录下查找静态ip
+- 在settings.py 中添加 STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static') ] 后在项目目录下添加static文件夹后就可以在此static目录下查找静态文件
+3. 模板中加载静态文件使用 load 加载 static标签 比如要加载static下的style.css 示例:
+```html
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+``` 
+4. 加载不同app下的同名静态文件时,先在static目录下创建与app名相同文件夹,将静态文件丢进此文件夹,在加载此文件时 前加上文件夹名 例如: {% static 'front/logo.jpg' %} {% ststic 'cms/logo.jpg' %}
+5. 如果不想每次在模板中加载静态文件时都使用load加载,可在 settings.py 中的TEMPLATES/OPTIONS 添加
+'builins':['django.templatetags.static'],以后在模板中可以直接使用static 标签,不用手动load
+6. 
+
+### 不使用缓存加载页面 `ctrl + shift + r`
