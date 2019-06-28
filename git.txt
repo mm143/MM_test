@@ -12,6 +12,9 @@
     mkdir dir ==> cd dir
     git init ==> 初始化版本库
     git add 添加文件
+    git add -A  提交所有变化
+    git add -u  提交被修改(modified)和被删除(deleted)文件，不包括新文件(new)
+    git add .  提交新文件(new)和被修改(modified)文件，不包括被删除(deleted)文件
     git commit -m '注释'  提交到git仓库
 版本回退：
     git log ==> 查看版本提交日志   git log --oneline 显示未commit id为7位数为一行的log  git log --pretty=oneline commit id为完整
