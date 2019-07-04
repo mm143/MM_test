@@ -97,8 +97,8 @@ consul agent -server -ui -bootstrap-expect 1 -data-dir /tmp/consul -bind=192.168
 3. 服务注册
 ```sh
 {
-  "id": "prometheus-server",
-  "name": "prometheus-node",
+  "id": "prometheus-server",  #id 之后要删除服务时就用这个ID
+  "name": "prometheus-node",    # service_name
   "address": "192.168.50.19",   #要注册服务的ip
   "port": 9100, 
   "tags": ["prometheus-target"],
@@ -116,8 +116,7 @@ curl --request PUT --data @regitor.json http://localhost:8500/v1/agent/service/r
 4. 解除服务
 ```sh
 # 向http://localhost:8500/v1/agent/service/deregister发送PUT请求,后边跟服务名
-curl --request PUT http://localhost:8500/v1/agent/service/deregister/userService1   #userService1为删除的服务名
-```
+curl --request PUT http://localhost:8500/v1/agent/service/deregister/SERVICE_ID   #SERVICE_ID为服务注册时的id
 
 5. prometheus.yml 中配置
 ```sh
@@ -130,6 +129,9 @@ curl --request PUT http://localhost:8500/v1/agent/service/deregister/userService
       - source_labels: [__meta_consul_tags]
         regex: .*prometheus-target.*
         action: keep
+      #用__meta_consul_service_id标签替换 instance中的值
+      - source_labels: [__meta_consul_service_id]   
+        target_label: instance
 ```
 
 ## Alertmanager 安装配置
@@ -149,8 +151,8 @@ global:
 
 route:
   group_by: ['alertname']
-  group_wait: 10s
-  group_interval: 10s
+  group_wait: 10s       #组报警等待时间
+  group_interval: 10s   #组报警间隔时间
   repeat_interval: 1h   #发送的频率
   receiver: 'webhook'   #使用的通知渠道 webhook为 钉钉机器人
 receivers:
@@ -233,5 +235,6 @@ make
 ```sh
 nohup ./prometheus-webhook-dingtalk --ding.profile=“ops_dingding=dingding_webhook” 2>&1 1>dingding.log &    
 # 启动8060端口, 启动后可 netstat -a | grep 8060 看下服务服务示范正常启动
+# 如需要使用自定义模板 启动时加上 --template.file=""  ""内填写绝对路径
 ```
 
